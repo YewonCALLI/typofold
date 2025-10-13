@@ -1,51 +1,38 @@
-import Scene from '@/components/canvas/Scene'
-import { Sky, OrbitControls, Sphere, Plane } from '@react-three/drei'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
+// src/pages/index.tsx
 
-export default function Page(props) {
-  const router = useRouter()
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
+import Head from 'next/head';
 
-  const [isHovered, setIsHovered] = useState(false)
-  const [active, setActive] = useState(false)
+// Three.js 컴포넌트는 SSR 비활성화
+const TypeFold = dynamic(() => import('@/components/TypeFold'), {
+  ssr: false,
+  loading: () => (
+    <div style={{
+      width: '100vw',
+      height: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '18px',
+      fontFamily: 'sans-serif'
+    }}>
+      Loading TypoFold...
+    </div>
+  ),
+});
 
+export default function Home() {
   return (
     <>
-      <button
-        onClick={() => {
-          router.push('/')
-        }}
-        className='fixed left-0 z-10 text-black bg-white w-fit md:hover:opacity-50 active:opacity-50'>
-        LOGO
-      </button>
-
-      <div className='fixed z-0 w-full h-screen'>
-        <Scene>
-          <ambientLight intensity={0.5} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-          <pointLight position={[-10, -10, -10]} />
-
-          <Sky sunPosition={[100, 20, 100]} />
-          {/* 
-          //@ts-ignore */}
-          <Sphere
-            onPointerOver={() => setIsHovered(true)}
-            onPointerOut={() => setIsHovered(false)}
-            onClick={() => setActive(!active)}
-            args={[1, 32, 32]}
-            position={[0, 0, 0]}>
-            {
-              //@ts-ignore
-              <meshStandardMaterial color={isHovered ? 'hotpink' : 'orange'} />
-            }
-          </Sphere>
-          <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} minDistance={0} maxDistance={100} />
-        </Scene>
-      </div>
+      <Head>
+        <title>TypoFold - 3D Typography Unfolding Tool</title>
+        <meta name="description" content="Create 3D typography unfold patterns" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <Suspense fallback={<div>Loading...</div>}>
+        <TypeFold />
+      </Suspense>
     </>
-  )
-}
-
-export async function getStaticProps() {
-  return { props: { title: 'Home' } }
+  );
 }

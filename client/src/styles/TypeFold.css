@@ -1,0 +1,379 @@
+@charset "utf-8";
+
+* {
+  box-sizing: border-box;
+
+  /* 스크롤바 업애기 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  transition: all 0.2s ease;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'montreal',
+    sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+}
+
+.canvasContainer {
+  flex: 1;
+  position: relative;
+}
+
+.unfoldedCanvas {
+  flex: 1;
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .unfoldedCanvas {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50vw;
+    height: 50vw;
+    overflow: hidden;
+  }
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+  height: fit-content;
+  top: 0;
+  left: 0;
+  padding: 15px 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.title {
+  width: fit-content;
+  height: 50px;
+  font-family: 'montreal',
+    sans-serif;
+  font-weight: 100;
+  text-align: center;
+  font-size: 40px;
+  line-height: normal;
+  background-image: linear-gradient(120deg, #B499F5 0%, #848BCB 50%, #5898A0 100%);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  cursor: pointer;
+}
+
+.title:hover {
+  opacity: 0.5;
+}
+
+.aboutButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  padding: 8px 0px;
+
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 100;
+  font-family: 'montreal',
+    sans-serif;
+}
+
+.aboutButton:hover {
+  opacity: 0.5;
+}
+
+
+.unfoldedCanvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  background-color: #f5f5f5;
+}
+
+.p5Canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.active {
+  background-color: #000000;
+  color: #ffffff;
+}
+.react-p5{
+  position: relative;
+  left:50%;
+  transform: translate(-50%,0%);
+}
+
+.controlContainer {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  color: #000;
+  padding: 10px;
+  z-index: 100;
+}
+
+.fileInputContainer {
+  display: flex;
+  width: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.fileInputLabel {
+  display: flex;
+  justify-content: flex-start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  padding: 8px;
+  background-color: #fff;
+  color: #9f9f9f;
+}
+
+.instruction{
+  font-size: 16px;
+  text-align: center;
+  font-weight: 200;
+  padding-bottom: 15px;
+}
+
+.fileInput {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  padding: 6px 8px;
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+.fileInput:hover {
+  opacity: 0.5;
+}
+
+.fileInput input {
+  display: none;
+}
+
+.fileButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  padding: 8px 13px;
+  border: 1px solid #000000;
+  color: #000000;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 100;
+  font-family: 'montreal',
+    sans-serif;
+  border-radius: 60px;
+}
+
+.fileButton:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.unfoldButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.unfoldButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.unfoldButton:hover {
+  opacity: 0.5;
+}
+
+.controlButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  padding: 6px 0px;
+  background-color: #5898A0;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cameraControl {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  right: 20px;
+  bottom: 20px;
+  background-color: #fff;
+  color: #000;
+  padding: 10px;
+  z-index: 100;
+}
+
+.cameraDirection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  height: fit-content;
+  gap: 10px;
+}
+
+.controlButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 110px;
+  height: fit-content;
+  padding: 8px 16px;
+  background-color: #fff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 100;
+  font-family: 'montreal',
+    sans-serif;
+  border-radius: 30px;
+}
+
+.controlButton:nth-child(1) {
+  color: #4c00ff;
+  border: 1px solid #4c00ff;
+}
+
+.controlButton:nth-child(1):hover {
+  background-color: #4c00ff;
+  color: #fff;
+}
+
+
+.controlButton:nth-child(2) {
+  color: #00aaff;
+  border: 1px solid #00aaff;
+}
+
+.controlButton:nth-child(2):hover {
+  background-color: #00aaff;
+  color: #fff;
+}
+
+.controlButton:nth-child(3) {
+  color: #ff00f2;
+  border: 1px solid #ff00f2;
+}
+
+.controlButton:nth-child(3):hover {
+  background-color: #ff00f2;
+  color: #fff;
+}
+
+/* About */
+
+.aboutContainer {
+  background: linear-gradient(#750cff 0%, #ffffff 20%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: fit-content;
+  padding: 80px 40px;
+  gap: 40px;
+}
+
+.row {
+  width: 100%;
+  height: fit-content;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.projectInfo {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.projectTitle {
+  font-family: 'montreal',
+    sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: normal;
+  color: #000;
+}
+
+.projectDescription {
+  font-family: 'montreal',
+    sans-serif;
+  font-weight: 100;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+}
+
+.projectImage {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
