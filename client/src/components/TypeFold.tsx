@@ -8,14 +8,12 @@ import {
   MapControls,
 } from '@react-three/drei';
 import * as THREE from 'three';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import Model from './Model';
-import InteractionHandler from './InteractionHandler';
 import UnfoldedFace from './UnfoldedFace';
 import useModelLoader from '@/hooks/useModelLoader';
-import { unfoldModelWithEdges, createFaceGroups } from '@/utils/geometryUtils'
+import { unfoldModelWithEdges, createFaceGroups } from '@/utils/geometryUtils';
 import CameraControl from './CameraControl';
 import ControlPanel from './ControlPanel';
 import { AlphabetModel, FaceGroup } from '@/types/three';
@@ -104,13 +102,13 @@ export default function TypeFold() {
           const { faceGroups: groups, geometry } = createFaceGroups(mesh);
           setFaceGroups(groups);
           setGroupedGeometry(geometry);
-          
+
           mesh.geometry = geometry;
           mesh.material = new THREE.MeshBasicMaterial({
             map: unfoldedTexture,
-            side: THREE.DoubleSide
+            side: THREE.DoubleSide,
           });
-          
+
           mesh.material.needsUpdate = true;
         }
       });
@@ -158,39 +156,42 @@ export default function TypeFold() {
   }, [fileURL]);
 
   return (
-    <div className="container">
-      <div className="header">
+    // container: relative flex flex-row w-screen h-screen
+    <div className="relative flex flex-row w-screen h-screen">
+      {/* header: fixed top-0 left-0 w-full px-[30px] py-[15px] flex flex-row justify-between items-center z-[100] */}
+      <div className="fixed top-0 left-0 w-full px-[30px] py-[15px] flex flex-row justify-between items-center z-[100]">
         <button
-          className="title"
+          className="w-fit h-[50px] font-light text-center text-[40px] bg-black"
+          style={{ WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text' }}
           onClick={() => router.push('/')}
         >
           TypoFold
         </button>
         <button
-          className="aboutButton"
+          className="flex justify-center items-center w-fit h-fit py-2 cursor-pointer text-[20px] font-light hover:opacity-50 transition-opacity"
           onClick={() => router.push('/about')}
         >
           About Project
         </button>
       </div>
-      <div className="canvasContainer">
-        <div className="controlContainer">
-          <div className="instruction">
+
+      {/* canvasContainer: flex-1 relative */}
+      <div className="flex-1 relative">
+        {/* controlContainer: absolute left-5 bottom-5 text-black p-[10px] z-[100] */}
+        <div className="absolute left-5 bottom-5 text-black p-[10px] z-[100]">
+          <div className="text-[16px] text-center font-extralight pb-[15px]">
             Choose an alphabet!
           </div>
-          <div className="fileInputContainer">
+          <div className="flex w-[200px] flex-wrap justify-center items-center gap-[10px]">
             {alphabets.map((alphabet) => (
               <button
                 key={alphabet.type}
                 style={
                   fileURL === alphabet.path
-                    ? {
-                        backgroundColor: '#000',
-                        color: '#fff',
-                      }
+                    ? { backgroundColor: '#000', color: '#fff' }
                     : {}
                 }
-                className="fileButton"
+                className="flex justify-center items-center w-[35px] h-[35px] px-[13px] py-2 border border-black text-black cursor-pointer text-[18px] font-light rounded-[60px] hover:bg-black hover:text-white transition-colors"
                 onClick={() => {
                   if (currentType?.type === alphabet.type) {
                     setFileURL(null);
@@ -206,6 +207,7 @@ export default function TypeFold() {
             ))}
           </div>
         </div>
+
         <ControlPanel
           cameraDirection={cameraDirection}
           onHandlePerspective={handleResetToInitialState}
@@ -214,19 +216,20 @@ export default function TypeFold() {
             handleUnfold();
           }}
         >
-          <button id="captureButton" className="controlButton">
+          <button id="captureButton" className="flex justify-center items-center w-[110px] h-fit px-4 py-2 bg-white cursor-pointer text-[16px] font-light rounded-[30px] border border-[#ff00f2] text-[#ff00f2] hover:bg-[#ff00f2] hover:text-white transition-colors">
             Print 🖨️
           </button>
         </ControlPanel>
+
         <Canvas
           style={{ width: '100%', height: '100%' }}
-          gl={{ 
+          gl={{
             preserveDrawingBuffer: true,
             antialias: true,
             alpha: true,
             toneMapping: THREE.ACESFilmicToneMapping,
-            toneMappingExposure: 0.8
-           }}
+            toneMappingExposure: 0.8,
+          }}
         >
           <PerspectiveCamera makeDefault position={[10, 10, 10]} fov={10} />
           <CameraControl cameraDirection={cameraDirection} />
@@ -235,11 +238,11 @@ export default function TypeFold() {
             position={[10, 10, 10]}
             angle={0.15}
             penumbra={1}
-            intensity={7.6} 
-            color="#fff9f0" 
+            intensity={7.6}
+            color="#fff9f0"
           />
           <pointLight position={[0, 0, 0]} intensity={0.4} color="#e0f0ff" />
-        
+
           <Scene gltf={gltf} />
           {cameraDirection === 'perspective' ? (
             <OrbitControls />
@@ -248,10 +251,16 @@ export default function TypeFold() {
           )}
         </Canvas>
       </div>
-      <div id="unfoldedCanvas" className="unfoldedCanvas">
-        <UnfoldedFace 
-          onTextureReady={handleTextureReady} 
-          faceSize={faceGroups ? faceGroups[0].size : null} 
+
+      {/* unfoldedCanvas: flex-1 relative bg-[#f5f5f5] */}
+      {/* On mobile: absolute top-5 right-5 w-[50vw] h-[50vw] overflow-hidden */}
+      <div
+        id="unfoldedCanvas"
+        className="flex-1 relative bg-[#f5f5f5] max-md:absolute max-md:top-5 max-md:right-5 max-md:w-[50vw] max-md:h-[50vw] max-md:overflow-hidden"
+      >
+        <UnfoldedFace
+          onTextureReady={handleTextureReady}
+          faceSize={faceGroups ? faceGroups[0].size : null}
         />
       </div>
     </div>
@@ -264,10 +273,10 @@ interface SceneProps {
 
 const Scene: React.FC<SceneProps> = ({ gltf }) => {
   const { gl } = useThree();
-  
+
   useEffect(() => {
     const printButton = document.getElementById('captureButton');
-    
+
     const handlePrint = () => {
       const link = document.createElement('a');
       link.setAttribute('download', 'canvas.png');
@@ -275,23 +284,18 @@ const Scene: React.FC<SceneProps> = ({ gltf }) => {
         'href',
         gl.domElement
           .toDataURL('image/png')
-          .replace('image/png', 'image/octet-stream')
+          .replace('image/png', 'image/octet-stream'),
       );
       link.click();
     };
 
     if (printButton) {
       printButton.addEventListener('click', handlePrint);
-      
       return () => {
         printButton.removeEventListener('click', handlePrint);
       };
     }
   }, [gl]);
 
-  return (
-    <>
-      {gltf && <Model gltf={gltf} />}
-    </>
-  );
+  return <>{gltf && <Model gltf={gltf} />}</>;
 };

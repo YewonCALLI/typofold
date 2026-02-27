@@ -23,7 +23,7 @@ export default function P5TextureEditor({ onTextureReady }: P5TextureEditorProps
   const drawPattern1 = (p5: p5) => {
     const time = p5.millis() * 0.001;
     
-    p5.background(20, 20, 40, 255);
+    p5.background(100, 20, 40, 255);
     
     const scale = patternSize;
     const cellSize = p5.width / scale;
@@ -48,7 +48,7 @@ export default function P5TextureEditor({ onTextureReady }: P5TextureEditorProps
           const b = p5.sin(wavePhase * 4.0 + time * 0.8) * 0.5 + 0.5;
           
           p5.noStroke();
-          p5.fill(r * 255, g * 255, b * 255,1);
+          p5.fill(r * 255, g * 255, b * 255,255);
           p5.ellipse(0, 0, size, size);
         }
         
